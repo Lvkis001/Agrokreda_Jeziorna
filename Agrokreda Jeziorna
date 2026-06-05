@@ -1,1 +1,727 @@
-print("Hello, World!")
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agrokreda Jeziorna</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #1a3a1a;
+    --green-mid: #2d5a27;
+    --green-bright: #4a8c3f;
+    --green-light: #c8e6c0;
+    --earth: #7a5c3a;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --text-dark: #1a1a1a;
+    --text-muted: #5a5a5a;
+    --gold: #c8a040;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(26, 58, 26, 0.97);
+    backdrop-filter: blur(8px);
+    padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+    border-bottom: 1px solid rgba(200,230,192,0.15);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+  }
+  .logo span { color: var(--green-light); display: block; font-size: 0.7rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.82);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green-light); }
+
+  .nav-cta {
+    background: var(--green-bright);
+    color: var(--white) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 500 !important;
+  }
+  .nav-cta:hover { background: #5ca050; color: var(--white) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background:
+      linear-gradient(to bottom, rgba(10,30,10,0.72) 0%, rgba(20,45,15,0.55) 60%, rgba(245,240,232,0) 100%),
+      url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=80') center/cover no-repeat;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px 2.5rem 80px;
+    position: relative;
+  }
+
+  .hero-content { max-width: 680px; }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(200,230,192,0.18);
+    border: 1px solid rgba(200,230,192,0.4);
+    color: var(--green-light);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 3px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.08;
+    margin-bottom: 1.4rem;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--green-light);
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--green-bright);
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #5ca050; transform: translateY(-1px); }
+
+  .btn-outline {
+    border: 1px solid rgba(255,255,255,0.5);
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--green-dark);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .stat-item {
+    flex: 1 1 200px;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--green-light);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* SECTION COMMON */
+  section { padding: 5rem 2.5rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+
+  .about-img-wrap {
+    position: relative;
+  }
+
+  .about-img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .about-badge {
+    position: absolute;
+    bottom: -24px;
+    right: -24px;
+    background: var(--green-dark);
+    color: var(--white);
+    padding: 1.4rem 1.8rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .about-badge strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    display: block;
+    color: var(--green-light);
+    line-height: 1;
+  }
+  .about-badge span { font-size: 0.78rem; color: rgba(255,255,255,0.7); letter-spacing: 0.08em; }
+
+  .about-text h2 { margin-bottom: 1.2rem; }
+  .about-text p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.2rem; font-weight: 300; }
+
+  .checkmarks { list-style: none; margin: 1.5rem 0 2rem; }
+  .checkmarks li {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    font-size: 0.95rem; color: var(--text-dark);
+    margin-bottom: 0.7rem;
+  }
+  .checkmarks li::before {
+    content: '✓';
+    color: var(--green-bright);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* PRODUCTS */
+  .products-bg { background: var(--white); }
+
+  .products-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: var(--cream);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,58,26,0.12); }
+
+  .product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .product-body { padding: 1.4rem 1.5rem; }
+  .product-cat {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin-bottom: 0.5rem;
+  }
+  .product-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .service-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    border-left: 3px solid var(--green-bright);
+  }
+
+  .service-icon {
+    width: 48px; height: 48px;
+    background: var(--green-light);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.2rem;
+    font-size: 1.4rem;
+  }
+
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin-bottom: 0.7rem;
+  }
+  .service-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* CTA BANNER */
+  .cta-banner {
+    background: var(--green-dark);
+    padding: 5rem 2.5rem;
+    text-align: center;
+  }
+  .cta-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .cta-banner p { color: rgba(255,255,255,0.7); margin-bottom: 2rem; font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--green-dark);
+    margin-bottom: 1rem;
+  }
+  .contact-info p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; font-weight: 300; }
+
+  .contact-detail {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-dark);
+  }
+  .contact-detail-icon {
+    width: 32px; height: 32px; background: var(--green-light); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; flex-shrink: 0; margin-top: 1px;
+  }
+
+  .contact-form { background: var(--white); padding: 2rem; border-radius: 8px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--text-dark); margin-bottom: 0.4rem; }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%; padding: 0.7rem 0.9rem;
+    border: 1px solid #ddd; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; color: var(--text-dark); background: var(--cream);
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--green-bright); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-submit {
+    background: var(--green-bright); color: var(--white); border: none;
+    padding: 0.85rem 2rem; border-radius: 4px; font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer;
+    width: 100%; transition: background 0.2s;
+  }
+  .form-submit:hover { background: #5ca050; }
+
+  /* FOOTER */
+  footer {
+    background: #0e2410;
+    color: rgba(255,255,255,0.6);
+    padding: 3rem 2.5rem 1.5rem;
+  }
+
+  .footer-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-brand .logo { margin-bottom: 1rem; }
+  .footer-brand p { font-size: 0.875rem; line-height: 1.7; }
+
+  .footer-col h4 {
+    color: var(--white); font-size: 0.85rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 1rem; font-weight: 500;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.5rem; }
+  .footer-col ul a {
+    color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--green-light); }
+
+  .footer-bottom {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+    section { padding: 3.5rem 1.2rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-badge { position: static; margin-top: 1rem; display: inline-block; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero { padding: 110px 1.2rem 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    Agrokreda Jeziorna
+    <span>Rolnictwo · Natura · Tradycja</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">O nas</a></li>
+    <li><a href="#products">Produkty</a></li>
+    <li><a href="#services">Usługi</a></li>
+    <li><a href="#contact" class="nav-cta">Kontakt</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">🌿 Naturalne &amp; Lokalne</div>
+    <h1>Blisko <em>ziemi,</em><br>blisko natury</h1>
+    <p>Agrokreda Jeziorna – rodzinna tradycja rolnicza od pokoleń. Oferujemy najwyższej jakości produkty prosto z pola oraz profesjonalne doradztwo agrotechniczne.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Nasze produkty</a>
+      <a href="#contact" class="btn-outline">Skontaktuj się</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">25+</span>
+    <span class="stat-label">Lat doświadczenia</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">350 ha</span>
+    <span class="stat-label">Upraw</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">100%</span>
+    <span class="stat-label">Naturalne metody</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">500+</span>
+    <span class="stat-label">Stałych klientów</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80"
+          alt="Rolnik w polu"
+          class="about-img"
+        />
+        <div class="about-badge">
+          <strong>2000</strong>
+          <span>Rok założenia</span>
+        </div>
+      </div>
+      <div class="about-text">
+        <p class="section-tag">O firmie</p>
+        <h2 class="section-title">Rodzinne gospodarstwo z pasją do rolnictwa</h2>
+        <p>Agrokreda Jeziorna to rodzinne przedsiębiorstwo rolnicze zlokalizowane nad Jeziorną. Od ponad dwóch dekad łączymy tradycyjne metody uprawy z nowoczesnymi technologiami agrotechnicznymi.</p>
+        <p>Nasza misja to dostarczanie produktów najwyższej jakości przy jednoczesnym poszanowaniu środowiska naturalnego i lokalnej społeczności.</p>
+        <ul class="checkmarks">
+          <li>Certyfikowane uprawy ekologiczne</li>
+          <li>Nowoczesny park maszynowy</li>
+          <li>Indywidualne podejście do każdego klienta</li>
+          <li>Bezpośrednia sprzedaż z pola</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Dowiedz się więcej</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" class="products-bg">
+  <div class="section-inner">
+    <div class="products-header">
+      <p class="section-tag">Oferta</p>
+      <h2 class="section-title">Nasze produkty</h2>
+      <p class="section-sub" style="margin: 0 auto;">Świeże, naturalne produkty prosto z naszych pól – bez pośredników, z gwarancją jakości.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&q=75" alt="Zboże" class="product-img" />
+        <div class="product-body">
+          <div class="product-cat">Rośliny zbożowe</div>
+          <div class="product-name">Pszenica i Żyto</div>
+          <p class="product-desc">Wysokiej jakości zboże uprawiane tradycyjnymi metodami na żyznych glebach Jeziornów.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=75" alt="Warzywa" class="product-img" />
+        <div class="product-body">
+          <div class="product-cat">Warzywa</div>
+          <div class="product-name">Świeże warzywa sezonowe</div>
+          <p class="product-desc">Bogaty wybór warzyw prosto z ogrodu – marchew, buraki, kapusta i wiele więcej.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=75" alt="Pola" class="product-img" />
+        <div class="product-body">
+          <div class="product-cat">Pasze i nawozy</div>
+          <div class="product-name">Pasze naturalne</div>
+          <p class="product-desc">Ekologiczne mieszanki paszowe i kompost produkowany na miejscu, bez chemii.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=75" alt="Nasiona" class="product-img" />
+        <div class="product-body">
+          <div class="product-cat">Materiał siewny</div>
+          <div class="product-name">Nasiona i sadzeniaki</div>
+          <p class="product-desc">Sprawdzony materiał siewny z własnych upraw – pszenica, rzepak, ziemniaki sadzeniaki.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <p class="section-tag">Usługi</p>
+    <h2 class="section-title">Co oferujemy</h2>
+    <p class="section-sub">Kompleksowa obsługa rolnicza – od usług maszynowych po doradztwo agronomiczne.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🚜</div>
+        <h3>Usługi maszynowe</h3>
+        <p>Orka, siew, zbiory – oferujemy pełen zakres usług maszynowych przy użyciu nowoczesnego sprzętu. Szybko i niezawodnie.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌱</div>
+        <h3>Doradztwo agrotechniczne</h3>
+        <p>Profesjonalne doradztwo w zakresie doboru odmian, nawożenia, ochrony roślin i optymalizacji plonów.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💧</div>
+        <h3>Nawadnianie i melioracja</h3>
+        <p>Projektowanie i budowa systemów nawadniających oraz prace melioracyjne dostosowane do potrzeb gospodarstwa.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📦</div>
+        <h3>Skup i magazynowanie</h3>
+        <p>Skup zbóż i warzyw po atrakcyjnych cenach. Dysponujemy nowoczesnym magazynem z kontrolowaną atmosferą.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛡️</div>
+        <h3>Ochrona roślin</h3>
+        <p>Profesjonalne zabiegi ochrony roślin certyfikowanymi preparatami. Bezpieczne i skuteczne metody.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📋</div>
+        <h3>Dofinansowania i dotacje</h3>
+        <p>Pomoc w uzyskaniu dofinansowań unijnych i krajowych dla rolników. Prowadzimy kompleksową dokumentację.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <h2>Gotowy do współpracy?</h2>
+  <p>Skontaktuj się z nami już dziś i odkryj jak możemy wspólnie rozwinąć Twoje gospodarstwo.</p>
+  <a href="#contact" class="btn-primary">Napisz do nas</a>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-tag">Kontakt</p>
+    <h2 class="section-title">Skontaktuj się z nami</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Agrokreda Jeziorna</h3>
+        <p>Chętnie odpowiemy na wszelkie pytania dotyczące naszych produktów i usług. Zapraszamy do odwiedzin lub kontaktu telefonicznego.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div><strong>Adres:</strong><br />ul. Polna 12, 05-520 Jeziorna<br />woj. mazowieckie</div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📞</div>
+          <div><strong>Telefon:</strong><br />+48 22 123 45 67</div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <div><strong>E-mail:</strong><br />kontakt@agrokreda-jeziorna.pl</div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🕐</div>
+          <div><strong>Godziny:</strong><br />Pon–Pt: 7:00–17:00<br />Sob: 8:00–13:00</div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Imię i nazwisko</label>
+            <input type="text" placeholder="Jan Kowalski" />
+          </div>
+          <div class="form-group">
+            <label>Telefon</label>
+            <input type="tel" placeholder="+48 600 000 000" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Adres e-mail</label>
+          <input type="email" placeholder="twoj@email.pl" />
+        </div>
+        <div class="form-group">
+          <label>Temat</label>
+          <select>
+            <option>Zapytanie o produkt</option>
+            <option>Usługi maszynowe</option>
+            <option>Doradztwo agrotechniczne</option>
+            <option>Skup płodów rolnych</option>
+            <option>Inne</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Wiadomość</label>
+          <textarea placeholder="Opisz swoje zapytanie..."></textarea>
+        </div>
+        <button class="form-submit" onclick="alert('Dziękujemy! Wkrótce się odezwiemy.')">Wyślij wiadomość</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">Agrokreda Jeziorna <span>Rolnictwo · Natura · Tradycja</span></div>
+      <p>Rodzinne gospodarstwo rolnicze nad Jeziorną. Dostarczamy naturalne produkty i profesjonalne usługi agrotechniczne od ponad 25 lat.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Nawigacja</h4>
+      <ul>
+        <li><a href="#about">O nas</a></li>
+        <li><a href="#products">Produkty</a></li>
+        <li><a href="#services">Usługi</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Produkty</h4>
+      <ul>
+        <li><a href="#">Zboża</a></li>
+        <li><a href="#">Warzywa</a></li>
+        <li><a href="#">Pasze</a></li>
+        <li><a href="#">Materiał siewny</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Agrokreda Jeziorna. Wszelkie prawa zastrzeżone.</span>
+    <span>Powered by GitHub Pages</span>
+  </div>
+</footer>
+
+</body>
+</html>
